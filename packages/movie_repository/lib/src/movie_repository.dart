@@ -1,6 +1,5 @@
 import 'package:cinema_api_client/cinema_api_client.dart';
 import 'package:cinema_models/cinema_models.dart';
-import 'package:intl/intl.dart';
 
 /// {@template movie_repository}
 /// movies repository
@@ -28,12 +27,5 @@ class MovieRepository {
       weekAgo: weekAgo.toFormattedDate(),
     );
     return response;
-  }
-}
-
-extension on DateTime {
-  String toFormattedDate() {
-    const datePattern = 'yyyy-MM-dd';
-    return DateFormat(datePattern).format(this);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'cinema_movie_api_response.g.dart';
@@ -119,6 +120,8 @@ class MovieResult extends Equatable {
   @JsonKey(name: 'release_date')
   final DateTime? releaseDate;
 
+  String get formattedReleaseDate => releaseDate?.toFormattedDate() ?? '';
+
   /// The title of the movie.
   final String? title;
 
@@ -153,4 +156,11 @@ class MovieResult extends Equatable {
         voteAverage,
         voteCount,
       ];
+}
+
+extension XDateTime on DateTime {
+  String toFormattedDate() {
+    const datePattern = 'yyyy-MM-dd';
+    return DateFormat(datePattern).format(this);
+  }
 }
