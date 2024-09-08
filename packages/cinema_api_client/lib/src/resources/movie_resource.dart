@@ -40,6 +40,7 @@ class MovieResource {
         'page': page,
         'sort_by': 'popularity.desc',
       };
+
       final response = await _apiClient.makeRequest<Map<String, dynamic>>(
         url: url,
         queryParameters: queryParameters,
