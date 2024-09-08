@@ -92,8 +92,7 @@ class MovieResult extends Equatable {
   /// The unique identifier for the movie.
   final int? id;
 
-  /// The original language of the movie, represented by the original language
-  /// enum.
+  /// The original language of the movie, represented by a language code.
   @JsonKey(name: 'original_language')
   final String? originalLanguage;
 
@@ -120,6 +119,9 @@ class MovieResult extends Equatable {
   @JsonKey(name: 'release_date')
   final DateTime? releaseDate;
 
+  /// A formatted version of the movie's release date.
+  ///
+  /// Uses the `yyyy-MM-dd` format.
   String get formattedReleaseDate => releaseDate?.toFormattedDate() ?? '';
 
   /// The title of the movie.
@@ -158,7 +160,9 @@ class MovieResult extends Equatable {
       ];
 }
 
+/// An extension on [DateTime] to provide a method for formatting dates.
 extension XDateTime on DateTime {
+  /// Formats the [DateTime] into a `yyyy-MM-dd` string.
   String toFormattedDate() {
     const datePattern = 'yyyy-MM-dd';
     return DateFormat(datePattern).format(this);
