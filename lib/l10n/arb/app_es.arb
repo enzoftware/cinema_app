@@ -1,7 +1,15 @@
 {
     "@@locale": "es",
-    "counterAppBarTitle": "Contador",
-    "@counterAppBarTitle": {
-        "description": "Texto mostrado en la AppBar de la página del contador"
+    "cinemaAppTitle": "Aplicación de Cine",
+    "@cinemaAppTitle": {
+        "description": "El título principal de la aplicación de cine"
+    },
+    "popularMoviesTitle": "Películas Populares",
+    "@popularMoviesTitle": {
+        "description": "Título para la sección que muestra películas populares"
+    },
+    "nowPlayingMoviesTitle": "Películas en Cartelera",
+    "@nowPlayingMoviesTitle": {
+        "description": "Título para la sección que muestra las películas que están actualmente en cartelera"
     }
 }
