@@ -28,7 +28,21 @@ class CinemaMovieApp extends StatelessWidget {
         ),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const CinemaMovieHome(),
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<PopularMoviesBloc>(
+              create: (context) => PopularMoviesBloc(
+                movieRepository: context.read<MovieRepository>(),
+              )..add(const FetchPopularMovies()),
+            ),
+            BlocProvider<NowMoviesBloc>(
+              create: (context) => NowMoviesBloc(
+                movieRepository: context.read<MovieRepository>(),
+              )..add(const FetchNowPlayingMovies()),
+            ),
+          ],
+          child: const CinemaMovieHome(),
+        ),
       ),
     );
   }
@@ -39,12 +53,10 @@ class CinemaMovieHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocProvider(
       create: (context) => AppBloc(),
-      child: BlocConsumer<AppBloc, AppState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
+      child: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           final selectedIndex =
               context.select((AppBloc bloc) => bloc.state.selectedIndex);
@@ -54,15 +66,32 @@ class CinemaMovieHome extends StatelessWidget {
                 const PopularMoviesPage(),
                 const NowPlayingPage(),
               ].elementAt(selectedIndex),
+              floatingActionButton: FloatingActionButton(
+                child: const Icon(Icons.sort_by_alpha_outlined),
+                onPressed: () {
+                  final state = context.read<AppBloc>().state;
+                  if (state.view() == HomeAppView.popular) {
+                    context
+                        .read<PopularMoviesBloc>()
+                        .add(const SortPopularMoviesAlphabetically());
+                  }
+
+                  if (state.view() == HomeAppView.nowPlaying) {
+                    context
+                        .read<NowMoviesBloc>()
+                        .add(const SortNowMoviesAlphabetically());
+                  }
+                },
+              ),
               bottomNavigationBar: BottomNavigationBar(
-                items: const [
+                items: [
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.movie_creation_outlined),
-                    label: 'Popular Movies',
+                    icon: const Icon(Icons.movie_creation_outlined),
+                    label: l10n.popularMoviesTitle,
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.video_chat_sharp),
-                    label: 'Now Playing Movies',
+                    icon: const Icon(Icons.video_chat_sharp),
+                    label: l10n.nowPlayingMoviesTitle,
                   ),
                 ],
                 currentIndex: selectedIndex,

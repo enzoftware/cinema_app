@@ -2,6 +2,22 @@ part of 'app_bloc.dart';
 
 enum DisplayMode { list, grid }
 
+enum HomeAppView { popular, nowPlaying }
+
+extension DisplayModeExtension on DisplayMode {
+  /// Returns the opposite display mode.
+  DisplayMode toggle() {
+    return this == DisplayMode.list ? DisplayMode.grid : DisplayMode.list;
+  }
+}
+
+extension AppStateExtension on AppState {
+  /// Returns the opposite display mode.
+  HomeAppView view() {
+    return selectedIndex == 0 ? HomeAppView.popular : HomeAppView.nowPlaying;
+  }
+}
+
 class AppState extends Equatable {
   const AppState({this.selectedIndex = 0, this.displayMode = DisplayMode.list});
 
