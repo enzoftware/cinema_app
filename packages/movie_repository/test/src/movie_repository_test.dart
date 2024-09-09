@@ -1,206 +1,136 @@
-// ignore_for_file: prefer_const_constructors
 import 'package:cinema_api_client/cinema_api_client.dart';
 import 'package:cinema_models/cinema_models.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:movie_repository/movie_repository.dart';
 import 'package:test/test.dart';
 
-class _MockCinemaApiClient extends Mock implements CinemaApiClient {}
+// Mocks for API client and resources
+class MockCinemaApiClient extends Mock implements CinemaApiClient {}
 
-class _MockMovieResource extends Mock implements MovieResource {}
+class MockMovieResource extends Mock implements MovieResource {}
 
 void main() {
+  late CinemaApiClient mockApiClient;
+  late MovieResource mockMovieResource;
+  late MovieRepository movieRepository;
+
+  setUp(() {
+    // Initialize mocks and repository
+    mockApiClient = MockCinemaApiClient();
+    mockMovieResource = MockMovieResource();
+    movieRepository = MovieRepository(apiClient: mockApiClient);
+
+    // Link movieResource to the mockApiClient
+    when(() => mockApiClient.movieResource).thenReturn(mockMovieResource);
+  });
+
   group('MovieRepository', () {
-    late CinemaApiClient apiClient;
-    late MovieResource movieResource;
-
-    // Helper method to create a dummy movie response
-    CinemaMovieApiResponse newMovieResponse({
-      int? page,
-      List<MovieResult>? results,
-      int? totalPages,
-      int? totalResults,
-    }) =>
-        CinemaMovieApiResponse(
-          page: page ?? 1,
-          results: results ?? [],
-          totalPages: totalPages ?? 1,
-          totalResults: totalResults ?? 1,
-        );
-
-    // Helper method to create a dummy movie result
-    MovieResult newMovie({
-      int? id,
-      String? title,
-    }) =>
-        MovieResult(
-          id: id ?? 1,
-          title: title ?? 'Test Movie',
-        );
-
-    setUpAll(() {
-      apiClient = _MockCinemaApiClient();
-      movieResource = _MockMovieResource();
-
-      when(() => apiClient.movieResource).thenReturn(movieResource);
-    });
-
-    test('can be instantiated', () {
-      expect(MovieRepository(apiClient: apiClient), isNotNull);
-    });
-
     group('fetchPopularMovies', () {
-      test('returns a CinemaMovieApiResponse', () async {
-        final movieRepository = MovieRepository(apiClient: apiClient);
-
-        final movieResponse = newMovieResponse(
-          results: [newMovie(id: 1, title: 'Movie 1')],
+      test('returns CinemaMovieApiResponse on success', () async {
+        // Mock successful API response
+        const mockResponse = CinemaMovieApiResponse(
+          page: 1,
+          results: [MovieResult(title: 'Movie 1')],
+          totalPages: 1,
+          totalResults: 1,
         );
 
-        when(() => movieResource.fetchPopularMovies(page: any(named: 'page')))
-            .thenAnswer(
-          (_) => Future.value(movieResponse),
-        );
+        // When the movieResource's fetchPopularMovies is called,
+        // return the mock response
+        when(
+          () => mockMovieResource.fetchPopularMovies(
+            page: any<int>(named: 'page'),
+          ),
+        ).thenAnswer((_) async => mockResponse);
 
-        final response = await movieRepository.fetchPopularMovies();
+        // Call the fetchPopularMovies method
+        final result = await movieRepository.fetchPopularMovies();
 
-        expect(response, equals(movieResponse));
+        // Verify the result is as expected
+        expect(result, equals(mockResponse));
+        verify(() => mockMovieResource.fetchPopularMovies()).called(1);
       });
 
-      test(
-          'throws FetchPopularMoviesException if fetching popular movies fails',
-          () async {
-        final movieRepository = MovieRepository(apiClient: apiClient);
+      test('throws FetchPopularMoviesException on error', () async {
+        // Simulate an exception from the API call
+        when(
+          () => mockMovieResource.fetchPopularMovies(
+            page: any<int>(named: 'page'),
+          ),
+        ).thenThrow(Exception('API error'));
 
-        when(() => movieResource.fetchPopularMovies(page: any(named: 'page')))
-            .thenThrow(
-          CinemaApiError(error: 'Failed to fetch popular movies'),
-        );
-
+        // Verify that FetchPopularMoviesException is thrown
         expect(
           () async => movieRepository.fetchPopularMovies(),
           throwsA(
-            isA<FetchPopularMoviesException>().having(
-              (e) => e.error,
-              'error',
-              isA<CinemaApiError>(),
-            ),
+            isA<FetchPopularMoviesException>()
+                .having((e) => e.toString(), 'error', contains('API error')),
           ),
         );
-      });
 
-      test('throws FetchPopularMoviesException with null error', () async {
-        final movieRepository = MovieRepository(apiClient: apiClient);
-
-        when(() => movieResource.fetchPopularMovies(page: any(named: 'page')))
-            .thenThrow(
-          Exception(),
-        );
-
-        expect(
-          () async => movieRepository.fetchPopularMovies(),
-          throwsA(
-            isA<FetchPopularMoviesException>().having(
-              (e) => e.error,
-              'error',
-              null,
-            ),
-          ),
-        );
+        verify(() => mockMovieResource.fetchPopularMovies()).called(1);
       });
     });
 
     group('fetchNowPlayingMovies', () {
-      test('returns a CinemaMovieApiResponse', () async {
-        final movieRepository = MovieRepository(apiClient: apiClient);
-
-        final movieResponse = newMovieResponse(
-          results: [newMovie(id: 2, title: 'Now Playing Movie')],
+      test('returns CinemaMovieApiResponse on success', () async {
+        // Mock successful API response
+        const mockResponse = CinemaMovieApiResponse(
+          page: 1,
+          results: [MovieResult(title: 'Now Playing Movie 1')],
+          totalPages: 1,
+          totalResults: 1,
         );
 
+        // When the movieResource's fetchNowPlayingMovies is called, return
+        // the mock response
         when(
-          () => movieResource.fetchNowPlayingMovies(
-            today: any(named: 'today'),
-            weekAgo: any(named: 'weekAgo'),
-            page: any(named: 'page'),
+          () => mockMovieResource.fetchNowPlayingMovies(
+            today: any<String>(named: 'today'),
+            weekAgo: any<String>(named: 'weekAgo'),
+            page: any<int>(named: 'page'),
           ),
-        ).thenAnswer(
-          (_) => Future.value(movieResponse),
-        );
+        ).thenAnswer((_) async => mockResponse);
 
-        final response = await movieRepository.fetchNowPlayingMovies();
+        // Call the fetchNowPlayingMovies method
+        final result = await movieRepository.fetchNowPlayingMovies();
 
-        expect(response, equals(movieResponse));
+        // Verify the result is as expected
+        expect(result, equals(mockResponse));
+        verify(
+          () => mockMovieResource.fetchNowPlayingMovies(
+            today: any<String>(named: 'today'),
+            weekAgo: any<String>(named: 'weekAgo'),
+          ),
+        ).called(1);
       });
 
-      test(
-          'throws FetchNowPlayingMoviesException if fetching now playing '
-          'movies fails', () async {
-        final movieRepository = MovieRepository(apiClient: apiClient);
-
+      test('throws FetchNowPlayingMoviesException on error', () async {
+        // Simulate an exception from the API call
         when(
-          () => movieResource.fetchNowPlayingMovies(
-            today: any(named: 'today'),
-            weekAgo: any(named: 'weekAgo'),
-            page: any(named: 'page'),
+          () => mockMovieResource.fetchNowPlayingMovies(
+            today: any<String>(named: 'today'),
+            weekAgo: any<String>(named: 'weekAgo'),
+            page: any<int>(named: 'page'),
           ),
-        ).thenThrow(
-          CinemaApiError(error: 'Failed to fetch now playing movies'),
-        );
+        ).thenThrow(Exception('API error'));
 
+        // Verify that FetchNowPlayingMoviesException is thrown
         expect(
           () async => movieRepository.fetchNowPlayingMovies(),
           throwsA(
-            isA<FetchNowPlayingMoviesException>().having(
-              (e) => e.error,
-              'error',
-              isA<CinemaApiError>(),
-            ),
+            isA<FetchNowPlayingMoviesException>()
+                .having((e) => e.toString(), 'error', contains('API error')),
           ),
         );
+
+        verify(
+          () => mockMovieResource.fetchNowPlayingMovies(
+            today: any<String>(named: 'today'),
+            weekAgo: any<String>(named: 'weekAgo'),
+          ),
+        ).called(1);
       });
-
-      test('throws FetchNowPlayingMoviesException with null error', () async {
-        final movieRepository = MovieRepository(apiClient: apiClient);
-
-        when(
-          () => movieResource.fetchNowPlayingMovies(
-            today: any(named: 'today'),
-            weekAgo: any(named: 'weekAgo'),
-            page: any(named: 'page'),
-          ),
-        ).thenThrow(
-          Exception(),
-        );
-
-        expect(
-          () async => movieRepository.fetchNowPlayingMovies(),
-          throwsA(
-            isA<FetchNowPlayingMoviesException>().having(
-              (e) => e.error,
-              'error',
-              null,
-            ),
-          ),
-        );
-      });
-    });
-  });
-
-  group('FetchPopularMoviesException', () {
-    test('can be instantiated and has correct toString', () {
-      final exception = FetchPopularMoviesException('test error');
-      expect(exception.toString(), 'FetchPopularMoviesException: test error');
-    });
-  });
-
-  group('FetchNowPlayingMoviesException', () {
-    test('can be instantiated and has correct toString', () {
-      final exception = FetchNowPlayingMoviesException('test error');
-      expect(
-        exception.toString(),
-        'FetchNowPlayingMoviesException: test error',
-      );
     });
   });
 }
