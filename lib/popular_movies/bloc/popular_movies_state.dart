@@ -18,7 +18,7 @@ final class PopularMoviesLoaded extends PopularMoviesState {
     this.isLoadingMore = false,
   });
 
-  final List<MovieResult>? movies;
+  final List<MovieResult> movies;
   final bool isLoadingMore;
 
   // CopyWith method to create a new instance with updated values
@@ -33,7 +33,7 @@ final class PopularMoviesLoaded extends PopularMoviesState {
   }
 
   @override
-  List<Object?> get props => [movies];
+  List<Object?> get props => [movies, isLoadingMore];
 }
 
 final class PopularMoviesError extends PopularMoviesState {

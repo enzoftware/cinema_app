@@ -10,3 +10,7 @@ sealed class PopularMoviesEvent extends Equatable {
 class FetchPopularMovies extends PopularMoviesEvent {
   const FetchPopularMovies();
 }
+
+class SortPopularMoviesAlphabetically extends PopularMoviesEvent {
+  const SortPopularMoviesAlphabetically();
+}

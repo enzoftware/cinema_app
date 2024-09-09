@@ -14,6 +14,7 @@ class PopularMoviesBloc extends Bloc<PopularMoviesEvent, PopularMoviesState> {
   })  : _movieRepository = movieRepository,
         super(PopularMoviesInitialLoading()) {
     on<FetchPopularMovies>(_onFetchPopularMovies);
+    on<SortPopularMoviesAlphabetically>(_onSortMoviesAlphabetically);
   }
 
   final MovieRepository _movieRepository;
@@ -42,6 +43,20 @@ class PopularMoviesBloc extends Bloc<PopularMoviesEvent, PopularMoviesState> {
     } catch (error) {
       emit(PopularMoviesError(message: error.toString()));
       addError(error);
+    }
+  }
+
+  FutureOr<void> _onSortMoviesAlphabetically(
+    SortPopularMoviesAlphabetically event,
+    Emitter<PopularMoviesState> emit,
+  ) {
+    if (state is PopularMoviesLoaded) {
+      final sortedMovies =
+          List<MovieResult>.from((state as PopularMoviesLoaded).movies)
+            ..sort(
+              (a, b) => a.title!.compareTo(b.title!),
+            );
+      emit(PopularMoviesLoaded(movies: sortedMovies));
     }
   }
 }
