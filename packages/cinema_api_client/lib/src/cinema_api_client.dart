@@ -24,10 +24,13 @@ class CinemaApiClient {
   /// {@macro cinema_api_client}
   CinemaApiClient(
     String baseUrl, {
+    required String apiKey,
     Dio? httpClient,
-  }) : _httpClient = httpClient ?? Dio(BaseOptions(baseUrl: baseUrl));
+  })  : _httpClient = httpClient ?? Dio(BaseOptions(baseUrl: baseUrl)),
+        _apiKey = apiKey;
 
   final Dio _httpClient;
+  final String _apiKey;
 
   /// Provides access to movie-related API endpoints.
   ///
@@ -59,16 +62,14 @@ class CinemaApiClient {
     Map<String, String>? headers,
     Map<String, Object> queryParameters = const {},
   }) async {
-    // TODO: Move interceptors to main_development
-    _httpClient.interceptors.add(LogInterceptor(requestBody: true));
-
-    queryParameters.addAll({
-      'api_key': const String.fromEnvironment('MOVIE_DB_API_KEY'),
-    });
+    final mutableQueryParameters = Map<String, Object>.from(queryParameters)
+      ..addAll({
+        'api_key': _apiKey,
+      });
 
     return _httpClient.request(
       url,
-      queryParameters: queryParameters,
+      queryParameters: mutableQueryParameters,
       options: Options(
         headers: headers ??
             {
