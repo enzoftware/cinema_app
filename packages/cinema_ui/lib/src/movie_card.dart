@@ -2,26 +2,28 @@ import 'package:cinema_ui/cinema_ui.dart';
 import 'package:flutter/material.dart';
 
 /// {@template movie_card}
-/// A reusable UI component for displaying movie information in a list or grid
-/// view.
+/// A reusable UI component for displaying movie information, either in a
+/// list or grid view.
 ///
-/// The card includes a movie poster, title, release date, popularity score,
-/// and a favorite toggle. The layout of the card changes based on the view mode
-/// (list or grid).
+/// The [MovieCard] widget includes the movie's poster, title, release date,
+/// and a favorite toggle. The card layout adjusts depending on whether it is
+/// displayed in a list or grid mode, making it versatile for different UI
+/// display options. The user can tap the favorite icon to mark a movie as
+/// a favorite.
 /// {@endtemplate}
 class MovieCard extends StatelessWidget {
   /// {@macro movie_card}
   ///
   /// Factory constructor to create a ListView-style [MovieCard].
   ///
-  /// Displays the movie in a list item layout.
+  /// This version of the card is laid out for a list view, typically used when
+  /// presenting movie data in a vertical list format.
   ///
   /// - [title]: The name of the movie.
-  /// - [releaseDate]: The date the movie was released.
+  /// - [releaseDate]: The release date of the movie.
   /// - [poster]: The path to the movie poster image.
-  /// - [popularity]: The movie's popularity score.
-  /// - [onTap]: Optional callback function triggered when the card is tapped.
-  /// - [onFavoriteTap]: Optional callback for when the favorite icon is tapped.
+  /// - [onFavoriteTap]: A callback that triggers when the favorite icon is
+  /// tapped.
   /// - [isFavorite]: Indicates whether the movie is marked as a favorite.
   factory MovieCard.list({
     required String title,
@@ -46,14 +48,15 @@ class MovieCard extends StatelessWidget {
   ///
   /// Factory constructor to create a GridView-style [MovieCard].
   ///
-  /// Displays the movie in a grid item layout.
+  /// This version of the card is laid out for a grid view, commonly used when
+  /// displaying movies in a grid format where multiple movie cards are shown
+  /// side by side.
   ///
   /// - [title]: The name of the movie.
-  /// - [releaseDate]: The date the movie was released.
+  /// - [releaseDate]: The release date of the movie.
   /// - [poster]: The path to the movie poster image.
-  /// - [popularity]: The movie's popularity score.
-  /// - [onTap]: Optional callback function triggered when the card is tapped.
-  /// - [onFavoriteTap]: Optional callback for when the favorite icon is tapped.
+  /// - [onFavoriteTap]: A callback that triggers when the favorite icon is
+  /// tapped.
   /// - [isFavorite]: Indicates whether the movie is marked as a favorite.
   factory MovieCard.grid({
     required String title,
@@ -74,10 +77,11 @@ class MovieCard extends StatelessWidget {
     );
   }
 
-  /// Private constructor for [MovieCard].
+  /// Private constructor used internally by both the list and grid factory
+  /// constructors.
   ///
-  /// This constructor is used internally by the factory constructors to
-  /// create either a list or grid version of the card.
+  /// This constructor accepts common arguments required to build the movie
+  /// card, regardless of whether it's for a list or grid view.
   const MovieCard._({
     required this.title,
     required this.releaseDate,
@@ -88,27 +92,27 @@ class MovieCard extends StatelessWidget {
     super.key,
   });
 
-  /// The title of the movie.
+  /// The title of the movie being displayed.
   final String title;
 
-  /// The release date of the movie.
+  /// The release date of the movie being displayed.
   final String releaseDate;
 
-  /// The path to the movie poster image.
+  /// The path to the movie poster image from TheMovieDB.
   final String poster;
 
-  /// Determines whether the card is displayed in grid mode or list mode.
+  /// Determines whether the card is being displayed in grid mode or list mode.
   final bool isGrid;
 
-  /// Indicates whether the movie is marked as a favorite.
+  /// Indicates whether the movie is currently marked as a favorite.
   final bool isFavorite;
 
-  /// Callback triggered when the favorite icon is tapped.
+  /// A callback function that is triggered when the favorite icon is tapped.
   final VoidCallback? onFavoriteTap;
 
   @override
   Widget build(BuildContext context) {
-    // Use the isGrid flag to switch between ListTile and GridTile layout
+    // The layout is determined by the `isGrid` flag.
     return isGrid
         ? GridTile(
             footer: GridTileBar(
@@ -156,21 +160,24 @@ class MovieCard extends StatelessWidget {
   }
 }
 
-/// A widget that displays a heart icon to represent whether a movie
-/// is marked as a favorite.
+/// A reusable widget that displays a heart-shaped icon indicating whether
+/// a movie is marked as a favorite.
 ///
-/// - [isFavorite]: Determines if the heart is filled (favorite) or outlined.
+/// - [isFavorite]: Determines if the heart icon is filled (indicating
+/// a favorite) or outlined (indicating not a favorite).
 class FavoriteIcon extends StatelessWidget {
-  /// Creates a [FavoriteIcon] widget to display the favorite state of a movie.
+  /// Creates a [FavoriteIcon] widget to represent the favorite status of
+  /// a movie.
   ///
-  /// - [isFavorite]: If true, shows a filled heart icon. If false, shows an
-  /// outlined heart icon.
+  /// - [isFavorite]: If true, shows a filled heart icon. If false, shows
+  /// an outlined heart icon.
   const FavoriteIcon({
     required this.isFavorite,
     super.key,
   });
 
-  /// Whether the movie is a favorite.
+  /// Indicates whether the movie is a favorite. A filled heart is shown
+  /// when true, and an outlined heart is shown when false.
   final bool isFavorite;
 
   @override
