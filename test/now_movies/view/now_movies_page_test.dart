@@ -339,5 +339,72 @@ void main() {
         expect(find.text('Movie Title'), findsOneWidget);
       });
     });
+
+    testWidgets(
+        'adds favorite movie when tapping favorite icon and movie is not a '
+        'favorite', (WidgetTester tester) async {
+      await mockNetworkImages(() async {
+        const movieResult = MovieResult(id: 1, title: 'Movie Title');
+
+        when(() => mockNowMoviesBloc.state).thenReturn(
+          const NowMoviesDataLoaded(
+            movies: [movieResult],
+          ),
+        );
+
+        await tester.pumpCinemaAppWithLocale(
+          child: const CustomScrollView(
+            slivers: [
+              NowMoviesData(),
+            ],
+          ),
+          mockNowMoviesBloc: mockNowMoviesBloc,
+          mockAppBloc: mockAppBloc,
+        );
+
+        await tester.tap(find.byIcon(Icons.favorite_border_outlined));
+        await tester.pumpAndSettle();
+
+        verify(
+          () => mockNowMoviesBloc.add(
+            const AddNowPlayingFavoriteMovie(movieResult),
+          ),
+        ).called(1);
+      });
+    });
+
+    testWidgets(
+        'removes favorite movie when tapping favorite icon and movie is a '
+        'favorite', (WidgetTester tester) async {
+      await mockNetworkImages(() async {
+        const movieResult = MovieResult(id: 1, title: 'Movie Title');
+
+        when(() => mockNowMoviesBloc.state).thenReturn(
+          const NowMoviesDataLoaded(
+            movies: [movieResult],
+            favoriteMoviesIds: ['1'],
+          ),
+        );
+
+        await tester.pumpCinemaAppWithLocale(
+          child: const CustomScrollView(
+            slivers: [
+              NowMoviesData(),
+            ],
+          ),
+          mockNowMoviesBloc: mockNowMoviesBloc,
+          mockAppBloc: mockAppBloc,
+        );
+
+        await tester.tap(find.byIcon(Icons.favorite));
+        await tester.pumpAndSettle();
+
+        verify(
+          () => mockNowMoviesBloc.add(
+            const RemoveNowPlayingFavoriteMovie(movieId: 1),
+          ),
+        ).called(1);
+      });
+    });
   });
 }
