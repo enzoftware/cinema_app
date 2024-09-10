@@ -1,142 +1,159 @@
 import 'package:cinema_ui/cinema_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 
 void main() {
+  const movieTitle = 'Movie Title';
+  const releaseDate = '2024-06-20';
+  const posterPath = '/path/to/poster.jpg';
+
   group('MovieCard', () {
-    testWidgets('renders correctly in list mode', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: MovieCard.list(
-              title: 'Inception',
-              releaseDate: '2010-07-16',
-              poster: '/inception.jpg',
-              popularity: 9.8,
-              onTap: () {},
+    testWidgets(
+      'renders a list MovieCard with correct data',
+      (WidgetTester tester) async {
+        await mockNetworkImages(() async {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: MovieCard.list(
+                  title: movieTitle,
+                  releaseDate: releaseDate,
+                  poster: posterPath,
+                ),
+              ),
             ),
-          ),
-        ),
-      );
+          );
 
-      expect(find.byType(ListTile), findsOneWidget);
-      expect(find.text('Inception'), findsOneWidget);
-      expect(find.text('2010-07-16'), findsOneWidget);
-      expect(
-        find.text('9.8'),
-        findsNothing,
-      );
-    });
+          expect(find.text(movieTitle), findsOneWidget);
+          expect(find.text(releaseDate), findsOneWidget);
+          expect(find.byType(FavoriteIcon), findsOneWidget);
+          expect(find.byType(TMDBImage), findsOneWidget);
+        });
+      },
+    );
 
-    testWidgets('renders correctly in grid mode', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: MovieCard.grid(
-              title: 'Interstellar',
-              releaseDate: '2014-11-07',
-              poster: '/interstellar.jpg',
-              popularity: 9.5,
-              onTap: () {},
+    testWidgets(
+      'renders a grid MovieCard with correct data',
+      (WidgetTester tester) async {
+        await mockNetworkImages(() async {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: MovieCard.grid(
+                  title: movieTitle,
+                  releaseDate: releaseDate,
+                  poster: posterPath,
+                ),
+              ),
             ),
-          ),
-        ),
-      );
+          );
 
-      expect(find.byType(GridTile), findsOneWidget);
-      expect(find.text('Interstellar'), findsOneWidget);
-      expect(find.text('2014-11-07'), findsOneWidget);
-      expect(
-        find.text('9.5'),
-        findsOneWidget,
-      );
-    });
+          expect(find.text(movieTitle), findsOneWidget);
+          expect(find.text(releaseDate), findsOneWidget);
+          expect(find.byType(FavoriteIcon), findsOneWidget);
+          expect(find.byType(TMDBImage), findsOneWidget);
+        });
+      },
+    );
 
-    testWidgets('triggers onTap when tapped in list mode',
-        (WidgetTester tester) async {
-      final mockOnTap = MockFunction();
+    testWidgets(
+      'calls onFavoriteTap when favorite icon is tapped (list view)',
+      (WidgetTester tester) async {
+        var wasFavoriteTapped = false;
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: MovieCard.list(
-              title: 'Inception',
-              releaseDate: '2010-07-16',
-              poster: '/inception.jpg',
-              popularity: 9.8,
-              onTap: mockOnTap.call,
+        await mockNetworkImages(() async {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: MovieCard.list(
+                  title: movieTitle,
+                  releaseDate: releaseDate,
+                  poster: posterPath,
+                  onFavoriteTap: () => wasFavoriteTapped = true,
+                ),
+              ),
             ),
-          ),
-        ),
-      );
+          );
 
-      await tester.tap(find.byType(ListTile));
-      verify(mockOnTap.call).called(1);
-    });
+          await tester.tap(find.byType(FavoriteIcon));
+          await tester.pumpAndSettle();
 
-    testWidgets('triggers onTap when tapped in grid mode',
-        (WidgetTester tester) async {
-      final mockOnTap = MockFunction();
+          expect(wasFavoriteTapped, isTrue);
+        });
+      },
+    );
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: MovieCard.grid(
-              title: 'Interstellar',
-              releaseDate: '2014-11-07',
-              poster: '/interstellar.jpg',
-              popularity: 9.5,
-              onTap: mockOnTap.call,
+    testWidgets(
+      'calls onFavoriteTap when favorite icon is tapped (grid view)',
+      (WidgetTester tester) async {
+        var wasFavoriteTapped = false;
+
+        await mockNetworkImages(() async {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: MovieCard.grid(
+                  title: movieTitle,
+                  releaseDate: releaseDate,
+                  poster: posterPath,
+                  onFavoriteTap: () => wasFavoriteTapped = true,
+                ),
+              ),
             ),
-          ),
-        ),
-      );
+          );
 
-      await tester.tap(find.byType(GridTile));
-      verify(mockOnTap.call).called(1);
-    });
+          await tester.tap(find.byType(FavoriteIcon));
+          await tester.pumpAndSettle();
 
-    testWidgets('renders poster image correctly in list mode',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: MovieCard.list(
-              title: 'Inception',
-              releaseDate: '2010-07-16',
-              poster: '/inception.jpg',
-              popularity: 9.8,
-              onTap: () {},
+          expect(wasFavoriteTapped, isTrue);
+        });
+      },
+    );
+
+    testWidgets(
+      'displays filled heart icon when isFavorite is true',
+      (WidgetTester tester) async {
+        await mockNetworkImages(() async {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: MovieCard.list(
+                  title: movieTitle,
+                  releaseDate: releaseDate,
+                  poster: posterPath,
+                  isFavorite: true,
+                ),
+              ),
             ),
-          ),
-        ),
-      );
+          );
 
-      expect(find.byType(TMDBImage), findsOneWidget);
-    });
+          final icon = tester.widget<Icon>(find.byType(Icon));
+          expect(icon.icon, equals(Icons.favorite));
+        });
+      },
+    );
 
-    testWidgets('renders poster image correctly in grid mode',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: MovieCard.grid(
-              title: 'Interstellar',
-              releaseDate: '2014-11-07',
-              poster: '/interstellar.jpg',
-              popularity: 9.5,
-              onTap: () {},
+    testWidgets(
+      'displays outlined heart icon when isFavorite is false',
+      (WidgetTester tester) async {
+        await mockNetworkImages(() async {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: MovieCard.grid(
+                  title: movieTitle,
+                  releaseDate: releaseDate,
+                  poster: posterPath,
+                ),
+              ),
             ),
-          ),
-        ),
-      );
+          );
 
-      expect(find.byType(TMDBImage), findsOneWidget);
-    });
+          final icon = tester.widget<Icon>(find.byType(Icon));
+          expect(icon.icon, equals(Icons.favorite_border_outlined));
+        });
+      },
+    );
   });
-}
-
-class MockFunction extends Mock {
-  void call();
 }

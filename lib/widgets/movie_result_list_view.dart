@@ -30,7 +30,6 @@ class MovieResultListView extends StatelessWidget {
                 title: movie.title ?? '',
                 releaseDate: movie.formattedReleaseDate,
                 poster: movie.posterPath ?? '',
-                popularity: movie.popularity ?? 0.0,
                 onFavoriteTap: () =>
                     onFavoriteMovieTapped(index, isFavorite: isFavorite),
                 isFavorite: isFavorite,
@@ -47,7 +46,6 @@ class MovieResultListView extends StatelessWidget {
                 title: movie.title ?? '',
                 releaseDate: movie.formattedReleaseDate,
                 poster: movie.posterPath ?? '',
-                popularity: movie.popularity ?? 0.0,
                 onFavoriteTap: () =>
                     onFavoriteMovieTapped(index, isFavorite: isFavorite),
                 isFavorite: isFavorite,

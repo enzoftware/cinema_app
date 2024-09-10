@@ -27,8 +27,6 @@ class MovieCard extends StatelessWidget {
     required String title,
     required String releaseDate,
     required String poster,
-    required double popularity,
-    VoidCallback? onTap,
     VoidCallback? onFavoriteTap,
     bool isFavorite = false,
     Key? key,
@@ -37,8 +35,6 @@ class MovieCard extends StatelessWidget {
       title: title,
       releaseDate: releaseDate,
       poster: poster,
-      popularity: popularity,
-      onTap: onTap,
       isGrid: false,
       isFavorite: isFavorite,
       onFavoriteTap: onFavoriteTap,
@@ -63,8 +59,6 @@ class MovieCard extends StatelessWidget {
     required String title,
     required String releaseDate,
     required String poster,
-    required double popularity,
-    VoidCallback? onTap,
     VoidCallback? onFavoriteTap,
     bool isFavorite = false,
     Key? key,
@@ -73,8 +67,6 @@ class MovieCard extends StatelessWidget {
       title: title,
       releaseDate: releaseDate,
       poster: poster,
-      popularity: popularity,
-      onTap: onTap,
       isGrid: true,
       isFavorite: isFavorite,
       onFavoriteTap: onFavoriteTap,
@@ -90,11 +82,9 @@ class MovieCard extends StatelessWidget {
     required this.title,
     required this.releaseDate,
     required this.poster,
-    required this.popularity,
     required this.isGrid,
     this.isFavorite = false,
     this.onFavoriteTap,
-    this.onTap,
     super.key,
   });
 
@@ -106,12 +96,6 @@ class MovieCard extends StatelessWidget {
 
   /// The path to the movie poster image.
   final String poster;
-
-  /// The popularity score of the movie.
-  final double popularity;
-
-  /// Callback triggered when the card is tapped.
-  final VoidCallback? onTap;
 
   /// Determines whether the card is displayed in grid mode or list mode.
   final bool isGrid;
