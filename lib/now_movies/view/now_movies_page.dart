@@ -120,10 +120,19 @@ class NowMoviesData extends StatelessWidget {
     final movies = context.select(
       (NowMoviesBloc bloc) => (bloc.state as NowMoviesDataLoaded).movies,
     );
+    final favoriteMovies = context.select(
+      (NowMoviesBloc bloc) =>
+          (bloc.state as NowMoviesDataLoaded).favoriteMoviesIds,
+    );
     final displayMode = context.select(
       (AppBloc bloc) => bloc.state.displayMode,
     );
 
-    return MovieResultListView(displayMode: displayMode, movies: movies);
+    return MovieResultListView(
+      displayMode: displayMode,
+      movies: movies,
+      favoriteMovies: favoriteMovies,
+      onFavoriteMovieTapped: (index, {isFavorite = false}) {},
+    );
   }
 }
