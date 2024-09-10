@@ -16,9 +16,7 @@ void main() {
       const errorState2 = NowMoviesError(message: 'An error occurred');
       const errorState3 = NowMoviesError(message: 'A different error');
 
-      // Same error message
       expect(errorState1, equals(errorState2));
-      // Different error message
       expect(errorState1, isNot(equals(errorState3)));
     });
 
@@ -65,14 +63,12 @@ void main() {
           favoriteMoviesIds: favoriteMoviesIds,
         );
 
-        // Update the isLoadingMore field
         final updatedState = originalState.copyWith(isLoadingMore: true);
 
         expect(updatedState.isLoadingMore, true);
         expect(updatedState.movies, movies);
         expect(updatedState.favoriteMoviesIds, favoriteMoviesIds);
 
-        // Update the movies list
         final newMovies = [movie2];
         final updatedStateWithNewMovies =
             originalState.copyWith(movies: newMovies);

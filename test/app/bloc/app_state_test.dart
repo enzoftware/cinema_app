@@ -49,22 +49,18 @@ void main() {
     test('copyWith creates a copy with updated values', () {
       const appState = AppState();
 
-      // Copy with no updates
       expect(appState.copyWith(), appState);
 
-      // Copy with updated selectedIndex
       expect(
         appState.copyWith(selectedIndex: 1),
         const AppState(selectedIndex: 1),
       );
 
-      // Copy with updated displayMode
       expect(
         appState.copyWith(displayMode: DisplayMode.grid),
         const AppState(displayMode: DisplayMode.grid),
       );
 
-      // Copy with both updated
       expect(
         appState.copyWith(selectedIndex: 1, displayMode: DisplayMode.grid),
         const AppState(selectedIndex: 1, displayMode: DisplayMode.grid),

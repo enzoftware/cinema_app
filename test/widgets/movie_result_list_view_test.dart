@@ -30,10 +30,8 @@ void main() {
 
     testWidgets('renders list view with correct number of movies',
         (WidgetTester tester) async {
-      // Arrange
       const displayMode = DisplayMode.list;
 
-      // Act
       await mockNetworkImages(() async {
         await tester.pumpCinemaAppWithLocale(
           child: CustomScrollView(
@@ -51,16 +49,13 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      // Assert
       expect(find.byType(MovieCard), findsAtLeast(6));
     });
 
     testWidgets('renders grid view with correct number of movies',
         (WidgetTester tester) async {
-      // Arrange
       const displayMode = DisplayMode.grid;
 
-      // Act
       await mockNetworkImages(() async {
         await tester.pumpCinemaAppWithLocale(
           child: CustomScrollView(
@@ -76,18 +71,15 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Scroll to make sure all elements are visible
         await tester.drag(find.byType(Scrollable), const Offset(0, -1000));
         await tester.pumpAndSettle();
       });
 
-      // Assert
       expect(find.byType(MovieCard), findsAtLeast(4));
     });
 
     testWidgets('calls onFavoriteMovieTapped when favorite icon is tapped',
         (WidgetTester tester) async {
-      // Arrange
       const displayMode = DisplayMode.list;
       var tappedIndex = -1;
       var isFavoriteStatus = false;
@@ -97,7 +89,6 @@ void main() {
         isFavoriteStatus = isFavorite;
       };
 
-      // Act
       await mockNetworkImages(() async {
         await tester.pumpCinemaAppWithLocale(
           child: CustomScrollView(
@@ -113,22 +104,18 @@ void main() {
         );
       });
 
-      // Simulate tapping on the favorite icon for the first movie
       final favoriteIcon = find.byIcon(Icons.favorite_border_outlined).first;
       await tester.tap(favoriteIcon);
       await tester.pump();
 
-      // Assert
-      expect(tappedIndex, 0); // First movie was tapped
-      expect(isFavoriteStatus, false); // First movie is not favorite
+      expect(tappedIndex, 0);
+      expect(isFavoriteStatus, false);
     });
 
     testWidgets('displays the correct favorite status for each movie',
         (WidgetTester tester) async {
-      // Arrange
       const displayMode = DisplayMode.list;
 
-      // Act
       await mockNetworkImages(() async {
         await tester.pumpCinemaAppWithLocale(
           child: CustomScrollView(

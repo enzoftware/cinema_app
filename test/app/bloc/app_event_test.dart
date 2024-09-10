@@ -1,4 +1,3 @@
-// Import necessary dependencies
 import 'package:cinema_app/app/bloc/app_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -26,7 +26,6 @@ void main() {
       localDatabase: mockMovieLocalDatabase,
     );
 
-    // Link movieResource to the mockApiClient
     when(() => mockApiClient.movieResource).thenReturn(mockMovieResource);
   });
 
@@ -46,10 +45,8 @@ void main() {
           ),
         ).thenAnswer((_) async => mockResponse);
 
-        // Call the fetchPopularMovies method
         final result = await movieRepository.fetchPopularMovies();
 
-        // Verify the result is as expected
         expect(result, equals(mockResponse));
         verify(() => mockMovieResource.fetchPopularMovies()).called(1);
       });
@@ -61,7 +58,6 @@ void main() {
           ),
         ).thenThrow(Exception('API error'));
 
-        // Verify that FetchPopularMoviesException is thrown
         expect(
           () async => movieRepository.fetchPopularMovies(),
           throwsA(
