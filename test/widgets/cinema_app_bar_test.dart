@@ -15,7 +15,7 @@ void main() {
       ];
 
       // Act: Pump the widget with the extension
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         child: CustomScrollView(
           slivers: [
             CinemaAppBar(title: testTitle, actions: testActions),
@@ -33,7 +33,7 @@ void main() {
       const testTitle = 'Popular Movies';
 
       // Act: Pump the widget and scroll to collapse the app bar
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         child: const CustomScrollView(
           slivers: [
             CinemaAppBar(title: testTitle),
@@ -62,7 +62,7 @@ void main() {
       const testTitle = 'Popular Movies';
 
       // Act: Pump the widget without collapsing the app bar
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         child: const CustomScrollView(
           slivers: [
             CinemaAppBar(title: testTitle),
@@ -80,7 +80,7 @@ void main() {
       const testTitle = 'Popular Movies';
 
       // Act: Pump the widget and scroll to collapse the app bar
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         child: const CustomScrollView(
           slivers: [
             CinemaAppBar(title: testTitle),

@@ -12,7 +12,7 @@ import 'package:shared_storage/shared_storage.dart';
 import 'helpers.dart';
 
 extension WidgetTesterExtension on WidgetTester {
-  Future<void> pumpWidgetWithLocale({
+  Future<void> pumpCinemaAppWithLocale({
     required Widget child,
     MovieRepository? mockMovieRepository,
     SharedStorage? mockSharedStorage,
@@ -49,7 +49,7 @@ extension WidgetTesterExtension on WidgetTester {
                 create: (_) => mockAppBloc ?? MockAppBloc(),
               ),
             ],
-            child: child,
+            child: Material(child: child),
           ),
         ),
       ),
