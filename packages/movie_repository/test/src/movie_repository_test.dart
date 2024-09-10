@@ -123,5 +123,34 @@ void main() {
         ).called(1);
       });
     });
+
+    group('Favorite Movies', () {
+      test('adds a new favorite movie successfully', () {
+        const movieResult = MovieResult(id: 1, title: 'Movie 1');
+
+        movieRepository.addNewFavoriteMovie(movieResult);
+
+        verify(() => mockMovieLocalDatabase.addFavoriteMovie('1')).called(1);
+      });
+
+      test('removes a favorite movie successfully', () {
+        movieRepository.removeFavoriteMovie(id: 1);
+
+        verify(() => mockMovieLocalDatabase.removeFavoriteMovieById(1))
+            .called(1);
+      });
+
+      test('gets the list of favorite movie IDs successfully', () {
+        const favoriteMovies = ['1', '2', '3'];
+
+        when(() => mockMovieLocalDatabase.getFavoriteMovies())
+            .thenReturn(favoriteMovies);
+
+        final result = movieRepository.getFavoriteMoviesIds();
+
+        expect(result, equals(favoriteMovies));
+        verify(() => mockMovieLocalDatabase.getFavoriteMovies()).called(1);
+      });
+    });
   });
 }
