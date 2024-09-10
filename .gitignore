@@ -83,6 +83,9 @@ unlinked_spec.ds
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 
+# API Keys
+api_keys.json
+
 # Coverage
 coverage/
 
