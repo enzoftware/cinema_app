@@ -67,7 +67,6 @@ class _NowMoviesViewState extends State<NowMoviesView> {
         CinemaAppBar(
           title: l10n.nowPlayingMoviesTitle,
           actions: [
-            const Icon(Icons.favorite),
             DisplayModeAction(
               displayMode: displayMode,
               onTap: () {
