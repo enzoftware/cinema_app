@@ -74,7 +74,7 @@ flutter test
 
 ### Project Structure
 
-```
+``` bash
 /lib
   /app          # App-level code and main entry point
   /popular_movies  # Popular movies feature
@@ -101,13 +101,13 @@ flutter test
 
 - **Get Popular Movies**:
 
-  ```
+  ``` bash
   GET /discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc
   ```
 
 - **Get Now Playing Movies**:
 
-  ```
+  ```bash
   GET /discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte={min_date}&release_date.lte={max_date}
   ```
 
