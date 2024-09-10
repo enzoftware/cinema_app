@@ -15,25 +15,29 @@ final class PopularMoviesInitialLoading extends PopularMoviesState {
 final class PopularMoviesLoaded extends PopularMoviesState {
   const PopularMoviesLoaded({
     required this.movies,
+    this.favoriteMovies = const [],
     this.isLoadingMore = false,
   });
 
   final List<MovieResult> movies;
+  final List<String> favoriteMovies;
   final bool isLoadingMore;
 
   // CopyWith method to create a new instance with updated values
   PopularMoviesLoaded copyWith({
     List<MovieResult>? movies,
+    List<String>? favoriteMovies,
     bool? isLoadingMore,
   }) {
     return PopularMoviesLoaded(
       movies: movies ?? this.movies,
+      favoriteMovies: favoriteMovies ?? this.favoriteMovies,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     );
   }
 
   @override
-  List<Object?> get props => [movies, isLoadingMore];
+  List<Object?> get props => [movies, favoriteMovies, isLoadingMore];
 }
 
 final class PopularMoviesError extends PopularMoviesState {

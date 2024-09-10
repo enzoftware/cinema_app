@@ -15,6 +15,8 @@ class PopularMoviesBloc extends Bloc<PopularMoviesEvent, PopularMoviesState> {
         super(PopularMoviesInitialLoading()) {
     on<FetchPopularMovies>(_onFetchPopularMovies);
     on<SortPopularMoviesAlphabetically>(_onSortMoviesAlphabetically);
+    on<AddNewFavoritePopularMovie>(_onAddNewFavoritePopularMovie);
+    on<RemoveFavoritePopularMovie>(_onRemoveFavoritePopularMovie);
   }
 
   final MovieRepository _movieRepository;
@@ -31,6 +33,7 @@ class PopularMoviesBloc extends Bloc<PopularMoviesEvent, PopularMoviesState> {
         previousMovies = (state as PopularMoviesLoaded).movies;
         emit((state as PopularMoviesLoaded).copyWith(isLoadingMore: true));
       }
+      final favoriteMovies = _movieRepository.getFavoriteMoviesIds();
       final response = await _movieRepository.fetchPopularMovies(
         page: _currentPage,
       );
@@ -38,8 +41,12 @@ class PopularMoviesBloc extends Bloc<PopularMoviesEvent, PopularMoviesState> {
       emit(
         PopularMoviesLoaded(
           movies: (previousMovies ?? []) + response.results!,
+          favoriteMovies: favoriteMovies,
         ),
       );
+    } on FetchPopularMoviesException catch (error) {
+      emit(PopularMoviesError(message: error.toString()));
+      addError(error);
     } catch (error) {
       emit(PopularMoviesError(message: error.toString()));
       addError(error);
@@ -56,7 +63,38 @@ class PopularMoviesBloc extends Bloc<PopularMoviesEvent, PopularMoviesState> {
             ..sort(
               (a, b) => a.title!.compareTo(b.title!),
             );
-      emit(PopularMoviesLoaded(movies: sortedMovies));
+      emit(
+        PopularMoviesLoaded(
+          movies: sortedMovies,
+          favoriteMovies: _movieRepository.getFavoriteMoviesIds(),
+        ),
+      );
     }
+  }
+
+  FutureOr<void> _onAddNewFavoritePopularMovie(
+    AddNewFavoritePopularMovie event,
+    Emitter<PopularMoviesState> emit,
+  ) {
+    _movieRepository.addNewFavoriteMovie(event.movieResult);
+    emit(
+      PopularMoviesLoaded(
+        movies: (state as PopularMoviesLoaded).movies,
+        favoriteMovies: _movieRepository.getFavoriteMoviesIds(),
+      ),
+    );
+  }
+
+  FutureOr<void> _onRemoveFavoritePopularMovie(
+    RemoveFavoritePopularMovie event,
+    Emitter<PopularMoviesState> emit,
+  ) {
+    _movieRepository.removeFavoriteMovie(id: event.movieId);
+    emit(
+      PopularMoviesLoaded(
+        movies: (state as PopularMoviesLoaded).movies,
+        favoriteMovies: _movieRepository.getFavoriteMoviesIds(),
+      ),
+    );
   }
 }

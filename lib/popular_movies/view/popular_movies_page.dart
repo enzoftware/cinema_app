@@ -68,7 +68,6 @@ class _PopularMoviesViewState extends State<PopularMoviesView> {
         CinemaAppBar(
           title: l10n.popularMoviesTitle,
           actions: [
-            const Icon(Icons.favorite),
             DisplayModeAction(
               displayMode: displayMode,
               onTap: () {
@@ -118,13 +117,30 @@ class PopularMoviesData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final movies = context.select(
-      (PopularMoviesBloc bloc) => (bloc.state as PopularMoviesLoaded).movies,
-    );
+    final state = context
+        .select((PopularMoviesBloc bloc) => bloc.state as PopularMoviesLoaded);
+
     final displayMode = context.select(
       (AppBloc bloc) => bloc.state.displayMode,
     );
 
-    return MovieResultListView(displayMode: displayMode, movies: movies);
+    return MovieResultListView(
+      displayMode: displayMode,
+      favoriteMovies: state.favoriteMovies,
+      movies: state.movies,
+      onFavoriteMovieTapped: (index, {isFavorite = false}) {
+        if (isFavorite) {
+          context.read<PopularMoviesBloc>().add(
+                RemoveFavoritePopularMovie(
+                  movieId: state.movies[index].id ?? -1,
+                ),
+              );
+        } else {
+          context.read<PopularMoviesBloc>().add(
+                AddNewFavoritePopularMovie(movieResult: state.movies[index]),
+              );
+        }
+      },
+    );
   }
 }
