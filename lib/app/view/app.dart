@@ -5,11 +5,17 @@ import 'package:cinema_app/popular_movies/popular_movies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_repository/movie_repository.dart';
+import 'package:shared_storage/shared_storage.dart';
 
 class CinemaMovieApp extends StatelessWidget {
-  const CinemaMovieApp({required this.movieRepository, super.key});
+  const CinemaMovieApp({
+    required this.movieRepository,
+    required this.sharedStorage,
+    super.key,
+  });
 
   final MovieRepository movieRepository;
+  final SharedStorage sharedStorage;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +36,7 @@ class CinemaMovieApp extends StatelessWidget {
         supportedLocales: AppLocalizations.supportedLocales,
         home: MultiBlocProvider(
           providers: [
+            BlocProvider(create: (context) => AppBloc(sharedStorage)),
             BlocProvider<PopularMoviesBloc>(
               create: (context) => PopularMoviesBloc(
                 movieRepository: context.read<MovieRepository>(),
@@ -54,8 +61,8 @@ class CinemaMovieHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return BlocProvider(
-      create: (context) => AppBloc(),
+    return BlocProvider.value(
+      value: context.read<AppBloc>(),
       child: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           final selectedIndex =
