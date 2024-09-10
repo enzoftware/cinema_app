@@ -1,4 +1,4 @@
-name: movie_repository
+name: shared_storage
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -7,8 +7,8 @@ concurrency:
 on:
   pull_request:
     paths:
-      - "packages/movie_repository/**"
-      - ".github/workflows/movie_repository.yaml"
+      - "packages/shared_storage/**"
+      - ".github/workflows/shared_storage.yaml"
     branches:
       - main
 
@@ -16,5 +16,5 @@ jobs:
   build:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
-      working_directory: packages/movie_repository
+      working_directory: packages/shared_storage
       min_coverage: 80

@@ -13,6 +13,7 @@ void main() {
 
   setUp(() {
     mockMovieRepository = MockMovieRepository();
+    when(() => mockMovieRepository.getFavoriteMoviesIds()).thenReturn([]);
     popularMoviesBloc = PopularMoviesBloc(movieRepository: mockMovieRepository);
   });
 
@@ -64,7 +65,9 @@ void main() {
       build: () => popularMoviesBloc,
       act: (bloc) => bloc.add(const FetchPopularMovies()),
       expect: () => [
-        const PopularMoviesError(message: 'Error fetching movies'),
+        const PopularMoviesError(
+          message: 'FetchPopularMoviesException: Error fetching movies',
+        ),
       ],
     );
 

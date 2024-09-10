@@ -1,4 +1,4 @@
-name: movie_repository
+name: cinema_models
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -7,8 +7,8 @@ concurrency:
 on:
   pull_request:
     paths:
-      - "packages/movie_repository/**"
-      - ".github/workflows/movie_repository.yaml"
+      - "packages/cinema_models/**"
+      - ".github/workflows/cinema_models.yaml"
     branches:
       - main
 
@@ -16,5 +16,6 @@ jobs:
   build:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
-      working_directory: packages/movie_repository
+      working_directory: packages/cinema_models
       min_coverage: 80
+      coverage_excludes: '*.g.dart'
