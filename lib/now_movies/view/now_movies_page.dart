@@ -116,22 +116,29 @@ class NowMoviesData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final movies = context.select(
-      (NowMoviesBloc bloc) => (bloc.state as NowMoviesDataLoaded).movies,
-    );
-    final favoriteMovies = context.select(
-      (NowMoviesBloc bloc) =>
-          (bloc.state as NowMoviesDataLoaded).favoriteMoviesIds,
-    );
+    final state = context
+        .select((NowMoviesBloc bloc) => bloc.state as NowMoviesDataLoaded);
     final displayMode = context.select(
       (AppBloc bloc) => bloc.state.displayMode,
     );
 
     return MovieResultListView(
       displayMode: displayMode,
-      movies: movies,
-      favoriteMovies: favoriteMovies,
-      onFavoriteMovieTapped: (index, {isFavorite = false}) {},
+      movies: state.movies,
+      favoriteMovies: state.favoriteMoviesIds,
+      onFavoriteMovieTapped: (index, {isFavorite = false}) {
+        if (isFavorite) {
+          context.read<NowMoviesBloc>().add(
+                RemoveNowPlayingFavoriteMovie(
+                  movieId: state.movies[index].id ?? -1,
+                ),
+              );
+        } else {
+          context.read<NowMoviesBloc>().add(
+                AddNowPlayingFavoriteMovie(state.movies[index]),
+              );
+        }
+      },
     );
   }
 }

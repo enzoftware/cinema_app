@@ -14,6 +14,8 @@ class NowMoviesBloc extends Bloc<NowMoviesEvent, NowMoviesState> {
         super(NowMoviesInitialLoading()) {
     on<FetchNowPlayingMovies>(_onFetchNowPlayingMovies);
     on<SortNowMoviesAlphabetically>(_onSortNowMoviesAlphabetically);
+    on<AddNowPlayingFavoriteMovie>(_onAddNowPlayingFavoriteMovie);
+    on<RemoveNowPlayingFavoriteMovie>(_onRemoveNowPlayingFavoriteMovie);
   }
 
   final MovieRepository _movieRepository;
@@ -55,7 +57,33 @@ class NowMoviesBloc extends Bloc<NowMoviesEvent, NowMoviesState> {
             ..sort(
               (a, b) => a.title!.compareTo(b.title!),
             );
-      emit(NowMoviesDataLoaded(movies: sortedMovies));
+      emit((state as NowMoviesDataLoaded).copyWith(movies: sortedMovies));
     }
+  }
+
+  FutureOr<void> _onAddNowPlayingFavoriteMovie(
+    AddNowPlayingFavoriteMovie event,
+    Emitter<NowMoviesState> emit,
+  ) {
+    _movieRepository.addNewFavoriteMovie(event.movieResult);
+    emit(
+      NowMoviesDataLoaded(
+        movies: (state as NowMoviesDataLoaded).movies,
+        favoriteMoviesIds: _movieRepository.getFavoriteMoviesIds(),
+      ),
+    );
+  }
+
+  FutureOr<void> _onRemoveNowPlayingFavoriteMovie(
+    RemoveNowPlayingFavoriteMovie event,
+    Emitter<NowMoviesState> emit,
+  ) {
+    _movieRepository.removeFavoriteMovie(id: event.movieId);
+    emit(
+      NowMoviesDataLoaded(
+        movies: (state as NowMoviesDataLoaded).movies,
+        favoriteMoviesIds: _movieRepository.getFavoriteMoviesIds(),
+      ),
+    );
   }
 }

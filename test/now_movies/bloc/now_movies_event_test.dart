@@ -1,20 +1,65 @@
 import 'package:cinema_app/now_movies/now_movies.dart';
+import 'package:cinema_models/cinema_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('NowMoviesEvent', () {
-    test('FetchNowPlayingMovies supports value comparison', () {
-      const fetchEvent1 = FetchNowPlayingMovies();
-      const fetchEvent2 = FetchNowPlayingMovies();
-
-      expect(fetchEvent1, fetchEvent2);
+    test('FetchNowPlayingMovies supports value equality', () {
+      expect(
+        const FetchNowPlayingMovies(),
+        equals(const FetchNowPlayingMovies()),
+      );
     });
 
-    test('SortNowMoviesAlphabetically supports value comparison', () {
-      const sortEvent1 = SortNowMoviesAlphabetically();
-      const sortEvent2 = SortNowMoviesAlphabetically();
+    test('FetchNowPlayingMovies props are correct', () {
+      expect(
+        const FetchNowPlayingMovies().props,
+        equals(<Object?>[]),
+      );
+    });
 
-      expect(sortEvent1, sortEvent2);
+    test('AddNowPlayingFavoriteMovie supports value equality', () {
+      const movieResult = MovieResult(id: 1, title: 'Movie Title');
+      expect(
+        const AddNowPlayingFavoriteMovie(movieResult),
+        equals(const AddNowPlayingFavoriteMovie(movieResult)),
+      );
+    });
+
+    test('AddNowPlayingFavoriteMovie props are correct', () {
+      const movieResult = MovieResult(id: 1, title: 'Movie Title');
+      expect(
+        const AddNowPlayingFavoriteMovie(movieResult).props,
+        equals([movieResult]),
+      );
+    });
+
+    test('RemoveNowPlayingFavoriteMovie supports value equality', () {
+      expect(
+        const RemoveNowPlayingFavoriteMovie(movieId: 1),
+        equals(const RemoveNowPlayingFavoriteMovie(movieId: 1)),
+      );
+    });
+
+    test('RemoveNowPlayingFavoriteMovie props are correct', () {
+      expect(
+        const RemoveNowPlayingFavoriteMovie(movieId: 1).props,
+        equals([1]),
+      );
+    });
+
+    test('SortNowMoviesAlphabetically supports value equality', () {
+      expect(
+        const SortNowMoviesAlphabetically(),
+        equals(const SortNowMoviesAlphabetically()),
+      );
+    });
+
+    test('SortNowMoviesAlphabetically props are correct', () {
+      expect(
+        const SortNowMoviesAlphabetically().props,
+        equals(<Object?>[]),
+      );
     });
   });
 }

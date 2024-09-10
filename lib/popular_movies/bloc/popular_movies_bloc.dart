@@ -64,9 +64,8 @@ class PopularMoviesBloc extends Bloc<PopularMoviesEvent, PopularMoviesState> {
               (a, b) => a.title!.compareTo(b.title!),
             );
       emit(
-        PopularMoviesLoaded(
+        (state as PopularMoviesLoaded).copyWith(
           movies: sortedMovies,
-          favoriteMovies: _movieRepository.getFavoriteMoviesIds(),
         ),
       );
     }
