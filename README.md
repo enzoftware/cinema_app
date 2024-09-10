@@ -1,6 +1,8 @@
 # Cinema App
 
-Cinema App is a mobile application built for Kueski, using Flutter to showcase popular and now playing movies by fetching data from TheMovieDB API. The app also allows users to view movie details, save favorite movies, and switch between different display modes.
+[Give try via diawi](https://i.diawi.com/3L1jAk)
+
+Cinema App is a mobile application built for Kueski, using Flutter to showcase popular and now playing movies by fetching data from TheMovieDB API. The app also allows users to save favorite movies, and switch between different display modes.
 
 ## Features
 
@@ -8,7 +10,6 @@ Cinema App is a mobile application built for Kueski, using Flutter to showcase p
 - **Now Playing Movies**: List the movies currently playing in theaters.
 - **List/Grid Toggle**: Toggle between a list or grid view to display the movies.
 - **Pagination**: Automatically load more movies as the user scrolls down.
-- **Movie Details**: View detailed information about each movie, including title, poster, genres, overview, release date, popularity, language, vote average, and status.
 - **Favorites**: Save favorite movies locally and view them when reopening the app.
 - **Error Handling**: Display different error messages for various network issues, like connection failures or API errors.
 
@@ -41,7 +42,7 @@ The app is built with a **modular architecture** and follows best practices such
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/cinema_app.git
+   git clone https://github.com/enzoftware/cinema_app.git
    cd cinema_app
    ```
 
@@ -52,16 +53,18 @@ The app is built with a **modular architecture** and follows best practices such
    ```
 
 3. Add your API Key:
-  In `lib/config/api_config.dart`, add your TheMovieDB API key:
+  Create `api_keys.json`, and follow the `api_keys_example.json` to add your TheMovieDB API key:
 
-     ```dart
-     const String apiKey = 'YOUR_API_KEY';
+     ```json
+    {
+      "TMDB_API_KEY":"your_api_key"
+    }
      ```
 
 4. Run the app on an emulator or physical device:
 
    ```bash
-   flutter run
+   flutter run --target lib/main_development.dart --dart-define-from-file api_keys.json
    ```
 
 ### Running Tests
@@ -97,46 +100,13 @@ flutter test
 - **[mocktail](https://pub.dev/packages/mocktail)**: For testing mock objects.
 - **[very_good_analysis](https://pub.dev/packages/very_good_analysis)**: Linting and analysis.
 
-## API Endpoints
-
-- **Get Popular Movies**:
-
-  ``` bash
-  GET /discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc
-  ```
-
-- **Get Now Playing Movies**:
-
-  ```bash
-  GET /discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte={min_date}&release_date.lte={max_date}
-  ```
-
-## Known Issues
+## Known Restrictions
 
 - The app requires an active internet connection to fetch movie data.
-- Error handling for API limits is basic and can be improved to notify the user properly.
-
-## Future Improvements
-
-- **Improve Sorting**: Add more flexible sorting options for movies.
-- **Caching**: Implement offline support by caching movies data.
-- **UI Enhancements**: Improve the user experience with smoother animations and transitions.
-- **Authentication**: Integrate user authentication for personalized features.
-
-## Contributing
-
-Feel free to fork this repository, open an issue or submit a pull request with any improvements.
+- Error handling for API limits is basic and can be improved to notify the user properly.s
 
 ## License
 
 This project is licensed under the MIT License.
 
 ---
-
-### Acknowledgements
-
-- Special thanks to [TheMovieDB](https://www.themoviedb.org/) for providing the movie data used in this project.
-
----
-
-This README should provide clear instructions and details about your project, making it easier for others to understand the structure, run the app, and contribute to the project.
