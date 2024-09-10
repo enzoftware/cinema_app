@@ -342,8 +342,8 @@ void main() {
     });
 
     testWidgets(
-        'adds favorite movie when tapping favorite icon and movie is not a favorite',
-        (WidgetTester tester) async {
+        'adds favorite movie when tapping favorite icon and movie is not a '
+        'favorite', (WidgetTester tester) async {
       await mockNetworkImages(() async {
         const movieResult = MovieResult(id: 1, title: 'Movie Title');
 
@@ -375,8 +375,8 @@ void main() {
     });
 
     testWidgets(
-        'removes favorite movie when tapping favorite icon and movie is a favorite',
-        (WidgetTester tester) async {
+        'removes favorite movie when tapping favorite icon and movie is a '
+        'favorite', (WidgetTester tester) async {
       await mockNetworkImages(() async {
         const movieResult = MovieResult(id: 1, title: 'Movie Title');
 
