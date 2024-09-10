@@ -52,7 +52,7 @@ void main() {
   group('CinemaMovieHome Locale Tests', () {
     testWidgets('CinemaMovieHome renders and uses localization (English)',
         (WidgetTester tester) async {
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         mockAppBloc: mockAppBloc,
         mockPopularMoviesBloc: mockPopularMoviesBloc,
         child: const CinemaMovieHome(),
@@ -64,7 +64,7 @@ void main() {
 
     testWidgets('CinemaMovieHome renders and uses localization (Spanish)',
         (WidgetTester tester) async {
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         locale: const Locale('es'),
         mockPopularMoviesBloc: mockPopularMoviesBloc,
         mockAppBloc: mockAppBloc,
@@ -78,7 +78,7 @@ void main() {
 
   group('CinemaMovieApp', () {
     testWidgets('renders correctly with all providers', (tester) async {
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         child: CinemaMovieApp(
           movieRepository: mockMovieRepository,
           sharedStorage: mockSharedStorage,
@@ -91,7 +91,7 @@ void main() {
 
   group('CinemaMovieHome', () {
     testWidgets('renders PopularMoviesPage initially', (tester) async {
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         mockAppBloc: mockAppBloc,
         mockPopularMoviesBloc: mockPopularMoviesBloc,
         mockNowMoviesBloc: mockNowMoviesBloc,
@@ -111,7 +111,7 @@ void main() {
         const NowMoviesDataLoaded(movies: []),
       );
 
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         mockAppBloc: mockAppBloc,
         mockPopularMoviesBloc: mockPopularMoviesBloc,
         mockNowMoviesBloc: mockNowMoviesBloc,
@@ -124,7 +124,7 @@ void main() {
 
     testWidgets('calls ChangeTabEvent when BottomNavigationBar is tapped',
         (tester) async {
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         mockAppBloc: mockAppBloc,
         mockPopularMoviesBloc: mockPopularMoviesBloc,
         mockNowMoviesBloc: mockNowMoviesBloc,
@@ -140,7 +140,7 @@ void main() {
     testWidgets(
         'calls SortPopularMoviesAlphabetically when FAB is pressed on '
         'PopularMoviesPage', (tester) async {
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         mockAppBloc: mockAppBloc,
         mockPopularMoviesBloc: mockPopularMoviesBloc,
         mockNowMoviesBloc: mockNowMoviesBloc,
@@ -162,7 +162,7 @@ void main() {
       when(() => mockAppBloc.state)
           .thenReturn(const AppState(selectedIndex: 1));
 
-      await tester.pumpWidgetWithLocale(
+      await tester.pumpCinemaAppWithLocale(
         mockAppBloc: mockAppBloc,
         mockPopularMoviesBloc: mockPopularMoviesBloc,
         mockNowMoviesBloc: mockNowMoviesBloc,
