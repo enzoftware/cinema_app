@@ -16,7 +16,7 @@ class MockNowMoviesBloc extends MockBloc<NowMoviesEvent, NowMoviesState>
 
 class MockAppBloc extends MockBloc<AppEvent, AppState> implements AppBloc {}
 
-final movies = [
+final _movies = [
   {
     'adult': false,
     'backdrop_path': '/lgkPzcOSnTvjeMnuFzozRO5HHw1.jpg',
@@ -197,7 +197,7 @@ void main() {
       await mockNetworkImages(() async {
         when(() => mockNowMoviesBloc.state).thenReturn(
           NowMoviesDataLoaded(
-            movies: movies.map(MovieResult.fromJson).toList(),
+            movies: _movies.map(MovieResult.fromJson).toList(),
           ),
         );
 
@@ -220,7 +220,7 @@ void main() {
       await mockNetworkImages(() async {
         when(() => mockNowMoviesBloc.state).thenReturn(
           NowMoviesDataLoaded(
-            movies: movies.map(MovieResult.fromJson).toList(),
+            movies: _movies.map(MovieResult.fromJson).toList(),
           ),
         );
 
@@ -245,7 +245,7 @@ void main() {
       await mockNetworkImages(() async {
         when(() => mockNowMoviesBloc.state).thenReturn(
           NowMoviesDataLoaded(
-            movies: movies.map(MovieResult.fromJson).toList(),
+            movies: _movies.map(MovieResult.fromJson).toList(),
             isLoadingMore: true,
           ),
         );
@@ -272,7 +272,7 @@ void main() {
       await mockNetworkImages(() async {
         when(() => mockNowMoviesBloc.state).thenReturn(
           NowMoviesDataLoaded(
-            movies: movies.map(MovieResult.fromJson).toList(),
+            movies: _movies.map(MovieResult.fromJson).toList(),
           ),
         );
 
