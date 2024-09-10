@@ -1,0 +1,15 @@
+{
+    "@@locale": "en",
+    "cinemaAppTitle": "Cinema App",
+    "@cinemaAppTitle": {
+        "description": "The main title of the cinema application"
+    },
+    "popularMoviesTitle": "Popular Movies",
+    "@popularMoviesTitle": {
+        "description": "Title for the section displaying popular movies"
+    },
+    "nowPlayingMoviesTitle": "Now Playing Movies",
+    "@nowPlayingMoviesTitle": {
+        "description": "Title for the section displaying movies that are currently playing in theaters"
+    }
+}
