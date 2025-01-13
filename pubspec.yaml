@@ -7,7 +7,7 @@ environment:
   sdk: ^3.5.0
 
 dependencies:
-  bloc: ^8.1.4
+  bloc: ^9.0.0
   cinema_api_client:
     path: packages/cinema_api_client
   cinema_models:
@@ -18,7 +18,7 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.6
+  flutter_bloc: ^9.0.0
   flutter_localizations:
     sdk: flutter
   hive_flutter: ^1.1.0
@@ -31,7 +31,7 @@ dependencies:
     path: packages/shared_storage
 
 dev_dependencies:
-  bloc_test: ^9.1.7
+  bloc_test: ^10.0.0
   flutter_test:
     sdk: flutter
   mocktail_image_network: ^1.2.0
